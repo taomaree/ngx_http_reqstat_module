@@ -113,9 +113,6 @@ static ngx_http_reqstat_store_t *
 static ngx_int_t ngx_http_reqstat_check_enable(ngx_http_request_t *r,
     ngx_http_reqstat_conf_t **rlcf, ngx_http_reqstat_store_t **store);
 
-static ngx_int_t ngx_http_reqstat_input_body_filter(ngx_http_request_t *r,
-    ngx_chain_t *chain);
-
 ngx_int_t ngx_http_reqstat_log_flow(ngx_http_request_t *r);
 
 
@@ -1429,70 +1426,70 @@ ngx_http_reqstat_rbtree_insert_value(ngx_rbtree_node_t *temp,
 }
 
 
-static ngx_int_t
-ngx_http_reqstat_input_body_filter(ngx_http_request_t *r, ngx_chain_t *chain)
-{
-    ngx_uint_t                    i, diff;
-    ngx_http_reqstat_conf_t      *rcf;
-    ngx_http_reqstat_store_t     *store;
-    ngx_http_reqstat_rbnode_t    *fnode, **fnode_store;
+// static ngx_int_t
+// ngx_http_reqstat_input_body_filter(ngx_http_request_t *r, ngx_chain_t *chain)
+// {
+//     ngx_uint_t                    i, diff;
+//     ngx_http_reqstat_conf_t      *rcf;
+//     ngx_http_reqstat_store_t     *store;
+//     ngx_http_reqstat_rbnode_t    *fnode, **fnode_store;
 
-    switch (ngx_http_reqstat_check_enable(r, &rcf, &store)) {
-        case NGX_ERROR:
-            return NGX_ERROR;
+//     switch (ngx_http_reqstat_check_enable(r, &rcf, &store)) {
+//         case NGX_ERROR:
+//             return NGX_ERROR;
 
-        case NGX_DECLINED:
-        case NGX_AGAIN:
-            return ngx_http_reqstat_input_body_filter(r, chain);
+//         case NGX_DECLINED:
+//         case NGX_AGAIN:
+//             return ngx_http_reqstat_input_body_filter(r, chain);
 
-        default:
-            break;
-    }
+//         default:
+//             break;
+//     }
 
-    diff = ngx_http_request_received(r) - store->recv;
-    store->recv = ngx_http_request_received(r);
+//     diff = ngx_http_request_received(r) - store->recv;
+//     store->recv = ngx_http_request_received(r);
 
-    fnode_store = store->monitor_index.elts;
-    for (i = 0; i < store->monitor_index.nelts; i++) {
-        fnode = fnode_store[i];
-        ngx_http_reqstat_count(fnode, NGX_HTTP_REQSTAT_BYTES_IN, diff);
-    }
+//     fnode_store = store->monitor_index.elts;
+//     for (i = 0; i < store->monitor_index.nelts; i++) {
+//         fnode = fnode_store[i];
+//         ngx_http_reqstat_count(fnode, NGX_HTTP_REQSTAT_BYTES_IN, diff);
+//     }
 
-    return ngx_http_reqstat_input_body_filter(r, chain);
-}
+//     return ngx_http_reqstat_input_body_filter(r, chain);
+// }
 
 
-ngx_int_t
-ngx_http_reqstat_log_flow(ngx_http_request_t *r)
-{
-    ngx_uint_t                    i, diff;
-    ngx_http_reqstat_conf_t      *rcf;
-    ngx_http_reqstat_store_t     *store;
-    ngx_http_reqstat_rbnode_t    *fnode, **fnode_store;
+// ngx_int_t
+// ngx_http_reqstat_log_flow(ngx_http_request_t *r)
+// {
+//     ngx_uint_t                    i, diff;
+//     ngx_http_reqstat_conf_t      *rcf;
+//     ngx_http_reqstat_store_t     *store;
+//     ngx_http_reqstat_rbnode_t    *fnode, **fnode_store;
 
-    switch (ngx_http_reqstat_check_enable(r, &rcf, &store)) {
-        case NGX_ERROR:
-            return NGX_ERROR;
+//     switch (ngx_http_reqstat_check_enable(r, &rcf, &store)) {
+//         case NGX_ERROR:
+//             return NGX_ERROR;
 
-        case NGX_DECLINED:
-        case NGX_AGAIN:
-            return NGX_OK;
+//         case NGX_DECLINED:
+//         case NGX_AGAIN:
+//             return NGX_OK;
 
-        default:
-            break;
-    }
+//         default:
+//             break;
+//     }
 
-    diff = r->connection->sent - store->sent;
-    store->sent = r->connection->sent;
+//     diff = r->connection->sent - store->sent;
+//     store->sent = r->connection->sent;
 
-    fnode_store = store->monitor_index.elts;
-    for (i = 0; i < store->monitor_index.nelts; i++) {
-        fnode = fnode_store[i];
-        ngx_http_reqstat_count(fnode, NGX_HTTP_REQSTAT_BYTES_OUT, diff);
-    }
+//     fnode_store = store->monitor_index.elts;
+//     for (i = 0; i < store->monitor_index.nelts; i++) {
+//         fnode = fnode_store[i];
+//         ngx_http_reqstat_count(fnode, NGX_HTTP_REQSTAT_BYTES_OUT, diff);
+//     }
 
-    return NGX_OK;
-}
+//     return NGX_OK;
+// }
 
 
 static ngx_http_reqstat_store_t *
