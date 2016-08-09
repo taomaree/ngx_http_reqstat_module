@@ -28,7 +28,7 @@ http {
 Contributing
 ------------
 
-To contribute to ngx_http_cors_filter, clone this repo locally and commit your code on a separate branch.
+To contribute to ngx_http_reqstat_module, clone this repo locally and commit your code on a separate branch.
 
 
 Author
