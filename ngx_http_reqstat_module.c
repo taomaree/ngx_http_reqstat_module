@@ -6,9 +6,6 @@
 #include "ngx_http_reqstat.h"
 
 
-static ngx_http_request_body_filter_pt  ngx_http_next_request_body_filter;
-
-
 static variable_index_t REQSTAT_RSRV_VARIABLES[NGX_HTTP_REQSTAT_RSRV] = {
     variable_index("bytes_in", 0),
     variable_index("bytes_out", 1),
@@ -307,9 +304,6 @@ ngx_http_reqstat_init(ngx_conf_t *cf)
     }
 
     *h = ngx_http_reqstat_init_handler;
-    
-    ngx_http_next_request_body_filter = ngx_http_top_request_body_filter;
-    ngx_http_top_request_body_filter = ngx_http_reqstat_input_body_filter;
 
     return NGX_OK;
 }
