@@ -25,7 +25,7 @@ http {
 }
 ````
 
-Undo
+Compatibility
 -----------
 Unfortunately, tengine forked by nginx has changed some core data source of nginx. These feature are not allowed as the following:
 
