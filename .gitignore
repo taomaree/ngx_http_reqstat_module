@@ -33,8 +33,5 @@ objs
 
 # Debug files
 *.dSYM/
-<<<<<<< HEAD
 t/servroot
-=======
 *.su
->>>>>>> 881f1fdb515e9c6782581d5a723425736a03cc8d
